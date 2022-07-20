@@ -15,12 +15,16 @@ const routes = (app: Express) => {
   // validate admin auth middleware
   app.route('/request-topics').get(requestTopicsController.getRequestTopics);
   // validate user auth middleware
-  app.route('/request-topics').post(requestTopicsController.createRequestTopics);
+  app
+    .route('/request-topics')
+    .post(requestTopicsController.createRequestTopics);
 
   // validate admin auth middleware
   app.route('/request-topics/:id').get(requestTopicsController.getRequestTopic);
   // validate admin auth middleware
-  app.route('/request-topics/:id').put(requestTopicsController.updateStatusRequestTopics);
+  app
+    .route('/request-topics/:id')
+    .put(requestTopicsController.updateStatusRequestTopics);
 };
 
 export default routes;

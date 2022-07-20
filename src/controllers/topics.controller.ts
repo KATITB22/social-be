@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express';
+import {RequestHandler} from 'express';
 import topicsServices from '../services/topics.services';
 
 const getTopics: RequestHandler = async (_, res) => {
@@ -7,4 +7,4 @@ const getTopics: RequestHandler = async (_, res) => {
   res.json(topics);
 };
 
-export default { getTopics };
+export default {getTopics};

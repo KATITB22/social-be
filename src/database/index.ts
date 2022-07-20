@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import {DataSource} from 'typeorm';
-import { User, Topic, RequestTopic } from '../models';
+import {User, Topic, RequestTopic} from '../models';
 import config from '../config';
 
 export const db = new DataSource({
