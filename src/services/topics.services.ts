@@ -1,5 +1,5 @@
-import { Topic } from '../models';
-import { db } from '../database';
+import {Topic} from '../models';
+import {db} from '../database';
 
 const topicRepository = db.getRepository(Topic);
 
@@ -13,23 +13,19 @@ const getTopics = async () => {
   }
 };
 
-const createTopic = async (params: {
-  topic_name: string;
-}) => {
+const createTopic = async (params: {topic_name: string}) => {
   try {
-    const newTopic = await topicRepository.save(
-      {
-        topic_name: params.topic_name,
-        hot_status: false,
-        created_at: new Date().getTime(),
-      }
-    );
+    const newTopic = await topicRepository.save({
+      topic_name: params.topic_name,
+      hot_status: false,
+      created_at: new Date(),
+    });
 
     return newTopic;
   } catch (err) {
     console.log(err);
     return [];
   }
-}
+};
 
-export default { getTopics, createTopic };
+export default {getTopics, createTopic};

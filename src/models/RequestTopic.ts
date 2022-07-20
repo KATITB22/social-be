@@ -1,4 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+} from 'typeorm';
 
 export enum RequestTopicStatus {
   PENDING = 0,
@@ -15,12 +20,12 @@ export class RequestTopic {
   name: string;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: RequestTopicStatus,
-    default: RequestTopicStatus.PENDING
+    default: RequestTopicStatus.PENDING,
   })
   status: RequestTopicStatus;
 
-  @Column({ type: 'bigint' })
-  created_at: number;
+  @CreateDateColumn()
+  created_at: Date;
 }
