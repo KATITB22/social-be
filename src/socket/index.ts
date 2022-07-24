@@ -1,5 +1,6 @@
 import {Server} from 'socket.io';
 import {ClientToServerEvents, ServerToClientEvents} from './interface';
+import authMiddleware from '../middleware/auth.middleware';
 
 function socket({
   io,
@@ -7,6 +8,10 @@ function socket({
   io: Server<ClientToServerEvents, ServerToClientEvents>;
 }) {
   console.log('🖥️ Sockets enabled');
+
+  io.use((socket, next) => {
+    authMiddleware.authSocketMiddleware(socket, next);
+  })
 
   io.on('connection', socket => {
     console.log(`🟩 User connected ${socket.id}`);

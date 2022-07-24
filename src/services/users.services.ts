@@ -12,4 +12,15 @@ const getUsers = async () => {
   }
 };
 
-export default {getUsers};
+const validateToken = async (token: string): Promise<boolean>  => {
+  try {
+    return true;
+  } catch (error) { 
+    throw error;
+  }
+}
+
+export default {
+  getUsers,
+  validateToken
+};
