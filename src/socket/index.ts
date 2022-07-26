@@ -17,9 +17,7 @@ function socket({
 }) {
   console.log('🖥️ Sockets enabled');
 
-  io.use((socket, next) => {
-    authMiddleware.authSocketMiddleware(socket, next);
-  })
+  io.use(authMiddleware.authSocketMiddleware);
 
   io.on('connection', socket => {
     console.log(`🟩 User connected ${socket.id}`);

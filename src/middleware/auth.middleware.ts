@@ -1,19 +1,25 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { Socket } from 'socket.io';
-import usersServices from '../services/users.services';
+import authServices from '../services/auth.services';
 
-const authMiddleware = async (req : Request, res: Response, next: NextFunction) => {
+const authMiddleware = async (
+  req : Request, 
+  res: Response, 
+  next: Function
+) => {
   const authHeader = req.headers['Authorization'];
 
-  const token = getAuthHeader(authHeader.toString());
+  const token = authServices.getAuthHeader(authHeader.toString());
   if (token === null) {
-    return res.sendStatus(401);
+    res.sendStatus(401);
+    return;
   }
   
   try {
-    const isValid = await usersServices.validateToken(token);
-    if (!isValid) {
-      return res.sendStatus(401);
+    const validToken = await authServices.validateToken(token);
+    if (!validToken) {
+      res.sendStatus(401);
+      return;
     }
     next();
   } catch(error) {
@@ -21,30 +27,28 @@ const authMiddleware = async (req : Request, res: Response, next: NextFunction) 
   }
 }
 
-const authSocketMiddleware = async (socket: Socket, next) => {
+const authSocketMiddleware = async (
+  socket: Socket, 
+  next: Function
+) => {
   const authHeader = socket.handshake.headers['Authorization'];
     
-  const token = getAuthHeader(authHeader.toString());
+  const token = authServices.getAuthHeader(authHeader.toString());
   if (token === null) {
-    return next(new Error('Unauthorized'));
+    next(new Error('Unauthorized'));
+    return;
   }
   
   try {
-    const isValid = await usersServices.validateToken(token);
-    if (!isValid) {
-      return next(new Error('Unauthorized'));
+    const validToken = await authServices.validateToken(token);
+    if (!validToken) {
+      next(new Error('Unauthorized'));
+      return;
     }
     next();
   } catch(error) {
     next(error);
   }
-}
-
-const getAuthHeader = (authHeader: string): string => {
-  if (authHeader === null || typeof authHeader === 'undefined') {
-    return null;
-  }
-  return authHeader.split(' ')[1];
 }
 
 export default {

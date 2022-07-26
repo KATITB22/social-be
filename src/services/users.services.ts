@@ -1,26 +1,52 @@
-import {User} from '../models/User';
-import {db} from '../database';
+import axios from 'axios';
+import config from '../config';
 
-const userRepository = db.getRepository(User);
-
-const getUsers = async () => {
-  try {
-    const users = await userRepository.find();
-    return users;
-  } catch (error) {
-    return [];
-  }
-};
-
-const validateToken = async (token: string): Promise<boolean>  => {
-  try {
-    return true;
-  } catch (error) { 
-    throw error;
-  }
+interface User {
+  id: string,
+  username: string,
+  name: string,
+  email: string
+  sex: string,
+  campus: string,
+  faculty: string,
 }
 
-export default {
-  getUsers,
-  validateToken
+const mainInstance = axios.create({
+  baseURL: config.mainApiUrl,
+});
+
+const getUser = async (token: string): Promise<User> => {
+  try {
+    const response = await mainInstance.get('/users/my-account', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'content-type': 'application/json',
+      }
+    });
+
+    if (response.status !== 200) {
+      throw new Error('Failed to retieve user data');
+    }
+
+    const data = response.data;
+    if (data == null) {
+      throw new Error('Failed to retieve user data');
+    }
+
+    const user: User = {
+      id: data.id,
+      username: data.username,
+      name: data.name,
+      email: data.email,
+      sex: data.sex,
+      campus: data.campus,
+      faculty: data.faculty,
+    }
+  
+    return user;
+  } catch (error) {
+    throw error;
+  }
 };
+
+export default {getUser};
