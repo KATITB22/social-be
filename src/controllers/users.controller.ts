@@ -7,7 +7,7 @@ const getUser: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const authHeader = req.headers['authorization'];
+  const authHeader = req.headers.authorization;
 
   const token = authServices.getAuthHeader(authHeader);
   if (token === null) {

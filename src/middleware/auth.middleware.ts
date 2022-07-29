@@ -8,7 +8,7 @@ const authMiddleware = async (
   res: Response, 
   next: Function
 ) => {
-  const authHeader = req.headers['authorization'];
+  const authHeader = req.headers.authorization;
 
   const token = authServices.getAuthHeader(authHeader);
   if (token === null) {
@@ -32,7 +32,6 @@ const authSocketMiddleware = async (
   socket: Socket, 
   next: Function
 ) => {
-  console.log("test");
   const authHeader = socket.handshake.auth.token;
     
   const token = authServices.getAuthHeader(authHeader);

@@ -36,7 +36,7 @@ const getAuthHeader = (authHeader: string | string[]): string => {
     return authString.split(' ')[1];
   }
 
-  return null;
+  return authString.split(' ')[0];
 }
 
 export default {
