@@ -1,13 +1,15 @@
 import {Request, RequestHandler, Response} from 'express';
 import authServices from '../services/auth.services';
 import usersServices from '../services/users.services';
+import errorHandler from '../utils/error.handler';
 
 const getUser: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  const authHeader = req.headers['Authorization'];
-  const token = authServices.getAuthHeader(authHeader.toString());
+  const authHeader = req.headers['authorization'];
+
+  const token = authServices.getAuthHeader(authHeader);
   if (token === null) {
     res.sendStatus(401);
     return;
@@ -18,7 +20,7 @@ const getUser: RequestHandler = async (
 
     res.json(response);
   } catch (error) {
-    res.status(500).send('Something went wrong');
+    errorHandler.handleResponseError(res, error);
   }
 };
 

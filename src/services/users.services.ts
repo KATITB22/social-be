@@ -2,13 +2,15 @@ import axios from 'axios';
 import config from '../config';
 
 interface User {
-  id: string,
   username: string,
+  provider: string,
+  confirmed: boolean,
+  blocked: boolean,
   name: string,
-  email: string
   sex: string,
   campus: string,
   faculty: string,
+  email: string
 }
 
 const mainInstance = axios.create({
@@ -17,7 +19,7 @@ const mainInstance = axios.create({
 
 const getUser = async (token: string): Promise<User> => {
   try {
-    const response = await mainInstance.get('/users/my-account', {
+    const response = await mainInstance.get('/users/me', {
       headers: {
         'Authorization': `Bearer ${token}`,
         'content-type': 'application/json',
@@ -34,13 +36,15 @@ const getUser = async (token: string): Promise<User> => {
     }
 
     const user: User = {
-      id: data.id,
       username: data.username,
+      provider: data.provider,
+      confirmed: data.confirmed,
+      blocked: data.blocked,
       name: data.name,
-      email: data.email,
       sex: data.sex,
       campus: data.campus,
       faculty: data.faculty,
+      email: data.email,
     }
   
     return user;

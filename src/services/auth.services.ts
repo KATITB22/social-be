@@ -19,20 +19,21 @@ const validateToken = async (token: string): Promise<boolean>  => {
   try {
     const response = await usersServices.getUser(token);
 
-    return response != null;
+    return response != null && typeof response != 'undefined';
   } catch (error) { 
     throw error;
   }
 }
 
-const getAuthHeader = (authHeader: string): string => {
+const getAuthHeader = (authHeader: string | string[]): string => {
   if (authHeader === null || typeof authHeader === 'undefined') {
     return null;
   }
 
-  const split = authHeader.split(' ');
+  const authString = authHeader.toString();
+  const split = authString.split(' ');
   if (split.length == 2) {
-    return authHeader.split(' ')[1];
+    return authString.split(' ')[1];
   }
 
   return null;
