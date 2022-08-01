@@ -8,7 +8,7 @@ import {
 @Entity()
 export class Topic {
   @PrimaryGeneratedColumn()
-  topic_id: number;
+  id: number;
 
   @Column()
   topic_name: string;
@@ -16,6 +16,6 @@ export class Topic {
   @Column()
   hot_status: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({type: 'timestamptz'})
   created_at: Date;
 }

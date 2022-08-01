@@ -12,10 +12,12 @@ const routes = (app: Express) => {
   });
 
   app.route('/user').get(usersController.getUser);
+  app.route('/topics').get(topicsController.getAllTopics);
+
+  //update hot topic status
+  app.route('/topics/status/:id').post(topicsController.updateStatusTopics);
 
   app.route('/auth').post(authController.login);
-
-  app.route('/topics').get(topicsController.getTopics);
 
   app.route('/reports').get(reportsController.getReports);
 
